@@ -2268,8 +2268,8 @@ int mainFunction( int inNumArgs, char **inArgs ) {
             imageH = (int)( imageW / targetAspectRatio );
             }
 
-        screen->setImageSize( imageH,
-                              imageW );
+        screen->setImageSize( imageW,
+                              imageH );
 
         AppLog::infoF( "Setting non-integer-scaled screen image size of %dx%d",
                        imageW, imageH );
@@ -2623,7 +2623,7 @@ GameSceneHandler::GameSceneHandler( ScreenGL *inScreen )
       mPrintFrameRate( true ),
       mNumFrames( 0 ), mFrameBatchSize( 100 ),
       mFrameBatchStartTimeSeconds( -1 ),
-      mBackgroundColor( 0, 0, 0, 1 ) { 
+      mBackgroundColor( 0, 0, 0, 1 ) {
     
     
     glClearColor( mBackgroundColor.r,

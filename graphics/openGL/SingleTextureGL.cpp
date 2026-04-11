@@ -401,12 +401,17 @@ void SingleTextureGL::setTextureData( unsigned char *inBytes,
         }
     
     if( mMipMap ) {
-        // GL_GENERATE_MIPMAP not available on some platforms,
-        // like mingw
-        // use gluBuild2DMipmaps in that case
-       #ifdef GL_GENERATE_MIPMAP
+        #ifdef GL_VERSION_3_0
+            // Use glGenerateMipmap (OpenGL 3.0+), which works on modern drivers.
+            // The old GL_GENERATE_MIPMAP texParameter was removed in OpenGL 3.1.
+            glTexImage2D( GL_TEXTURE_2D, 0,
+                          internalTexFormat, inWidth,
+                          inHeight, 0,
+                          texDataFormat, GL_UNSIGNED_BYTE, inBytes );
+            glGenerateMipmap( GL_TEXTURE_2D );
+        #elif defined(GL_GENERATE_MIPMAP)
+            // Legacy path for old OpenGL (< 3.0) / MinGW cross-compile
             glTexParameteri( GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE );
-            
             glTexImage2D( GL_TEXTURE_2D, 0,
                           internalTexFormat, inWidth,
                           inHeight, 0,
